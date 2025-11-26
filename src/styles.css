@@ -1,0 +1,122 @@
+*{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+:root{--blue:#1d4ed8;--muted:#6b7280;}
+body,html,#root{height:100%;margin:0;}
+.app{display:flex;flex-direction:column;height:100vh;}
+.topbar{background:linear-gradient(90deg,var(--blue),#2563eb);color:white;padding:12px 18px;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.main-grid{display:flex;flex:1;gap:16px;padding:16px;}
+.sidebar{width:160px;display:flex;flex-direction:column;gap:8px;}
+.sidebar button{padding:8px;border-radius:8px;border:1px solid #e5e7eb;background:white;text-align:left;cursor:pointer;}
+.content{flex:1;background:white;padding:16px;border-radius:12px;box-shadow:0 4px 20px rgba(16,24,40,0.04);overflow:auto;}
+.footer{padding:12px;background:#f9fafb;border-top:1px solid #eee;display:flex;gap:12px;align-items:center;justify-content:center;}
+.card{padding:12px;border-radius:8px;background:#fff;border:1px solid #f1f5f9;margin-bottom:12px;}
+.row{display:flex;align-items:center;gap:8px;}
+.small{font-size:0.9rem;color:var(--muted);}
+.primary{background:var(--blue);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;}
+.input{padding:8px;border-radius:8px;border:1px solid #e6eef8;width:100%;}
+.game-list{display:flex;flex-direction:column;gap:8px;}
+.game-row{display:flex;justify-content:space-between;padding:10px;border-radius:8px;border:1px solid #eef2ff;}
+.badge{background:#eef2ff;color:var(--blue);padding:4px 8px;border-radius:8px;font-weight:600;}
+.ad-placeholder{padding:8px;border-radius:8px;background:#fff7ed;border:1px dashed #f59e0b;color:#92400e;}
+@media(min-width:900px){
+  .main-grid{padding:24px;}
+  .sidebar{width:200px;}
+}
+/* ==== BUTTON THEME ==== */
+button {
+  all: unset;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  user-select: none;
+  min-width: 90px;
+}
+
+/* Primary buttons — main actions (e.g., Go!) */
+button.primary {
+  background-color: #007bff;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+button.primary:hover {
+  background-color: #0066d1;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+button.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary / input-style buttons (e.g., Reset) */
+button.input {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #d0d0d0;
+}
+
+button.input:hover {
+  background-color: #e4e4e4;
+  transform: translateY(-1px);
+}
+
+button.input:active {
+  transform: translateY(0);
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive layout when buttons are side-by-side */
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .button-row {
+    flex-direction: column;
+  }
+  .button-row button {
+    width: 100%;
+  }
+}
+
+/* ==== DARK MODE SUPPORT ==== */
+@media (prefers-color-scheme: dark) {
+  button.primary {
+    background-color: #3391ff;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+
+  button.primary:hover {
+    background-color: #1f7cf0;
+  }
+
+  button.input {
+    background-color: #2a2a2a;
+    color: #ddd;
+    border: 1px solid #444;
+  }
+
+  button.input:hover {
+    background-color: #3a3a3a;
+  }
+
+  .button-row {
+    gap: 12px;
+  }
+}
