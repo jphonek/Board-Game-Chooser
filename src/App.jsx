@@ -160,12 +160,17 @@ export default function App(){
   const updateSettings = (settings) => setState(s=>({...s, settings}));
 
   return (
-    <div className="app">
-      <header className="topbar">
-        <h1>Board Game Chooser</h1>
-      </header>
+  <div className="app">
+    <div style={{background: 'yellow', padding: '20px', fontSize: '24px'}}>
+      TEST - If you see this, React is working
+    </div>
+    
+    <header className="topbar">
+      <h1>Board Game Chooser</h1>
+    </header>
 
-      <nav className="mobile-nav">
+
+      <nav className="mobile-nav" style={{backgroundColor: 'red', height: '100px', display: 'flex', width: '100%'}}>
         <button onClick={()=> setState(s=>({...s, route: "input"}))}>Input</button>
         <button onClick={()=> setState(s=>({...s, route: "library"}))}>Library</button>
         <button onClick={()=> setState(s=>({...s, route: "results"}))}>Results</button>
