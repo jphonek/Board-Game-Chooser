@@ -165,6 +165,12 @@ export default function App(){
         <h1>Board Game Chooser</h1>
       </header>
 
+      <nav className="mobile-nav">
+        <button onClick={()=> setState(s=>({...s, route: "input"}))}>Input</button>
+        <button onClick={()=> setState(s=>({...s, route: "library"}))}>Library</button>
+        <button onClick={()=> setState(s=>({...s, route: "results"}))}>Results</button>
+      </nav>
+
       <main className="main-grid">
         <nav className="sidebar">
           <button onClick={()=> setState(s=>({...s, route: "input"}))}>Input</button>
