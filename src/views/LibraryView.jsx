@@ -11,32 +11,37 @@ export default function LibraryView({ state, setState }) {
 
   const updateCell = async (rowIdx, colIdx, value) => {
     try {
-      const sheetId = "1JVJlhg5NDrGmB638MyGaSsYAcNHw78SPX4GDfqDMhfQ";
-      const range = `Sheet1!${String.fromCharCode(65 + colIdx)}${rowIdx + 2}`; // +2 because row 1 is header and sheets are 1-indexed
+      const appsScriptUrl = "https://script.google.com/macros/s/AKfycbxi6FjuQazB4lXhz-6MwNXdf3C9DUOzEw7kkgj0LWLs/dev";
       
-      const response = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?valueInputOption=USER_ENTERED`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            values: [[value]],
-          }),
-        }
-      );
+      const range = `${String.fromCharCode(65 + colIdx)}${rowIdx + 2}`; // e.g., "A2"
+      
+      const response = await fetch(appsScriptUrl, {
+        method: "POST",
+        mode: "no-cors", // Required for Apps Script
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          range: range,
+          value: value,
+        }),
+      });
 
-      if (response.ok) {
-        // Update local state
-        setState((s) => {
-          const newValues = [...s.sheetValues];
-          newValues[rowIdx + 1][colIdx] = value;
-          return { ...s, sheetValues: newValues };
-        });
-      } else {
-        alert("Failed to update cell. Make sure the sheet is publicly editable.");
-      }
+      // Note: no-cors means we can't read the response, so we assume success
+      // Update local state optimistically
+      setState((s) => {
+        const newValues = [...s.sheetValues];
+        newValues[rowIdx + 1][colIdx] = value;
+        return { ...s, sheetValues: newValues };
+      });
+      
+      // Trigger a refresh to sync the games array
+      setTimeout(() => {
+        setState((s) => ({
+          ...s,
+          sheetSyncTrigger: (s.sheetSyncTrigger || 0) + 1,
+        }));
+      }, 500);
     } catch (error) {
       console.error("Error updating cell:", error);
       alert("Error updating cell: " + error.message);
@@ -79,6 +84,15 @@ export default function LibraryView({ state, setState }) {
             <div className="small">
               Rows: {state.sheetValues ? state.sheetValues.length - 1 : 0}
             </div>
+            <a 
+              href={SHEET_VIEW_URL} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="input"
+              style={{ textDecoration: "none", padding: "8px 12px" }}
+            >
+              Open in Sheets
+            </a>
             <button
               className="input"
               onClick={() =>
@@ -92,6 +106,12 @@ export default function LibraryView({ state, setState }) {
             </button>
           </div>
         </div>
+
+        {state.sheetLoadError && (
+          <div style={{ marginTop: 12, padding: 12, background: "#fee", border: "1px solid #fcc", borderRadius: 4 }}>
+            <strong>Error loading sheet:</strong> {state.sheetLoadError}
+          </div>
+        )}
 
         {/* --- Sheet Table --- */}
         <div style={{ marginTop: 12 }}>
