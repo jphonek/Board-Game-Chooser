@@ -207,6 +207,9 @@ export default function LibraryView({ state, setState }) {
                             textAlign: "left",
                             cursor: "pointer",
                             userSelect: "none",
+                            position: i === 0 ? "sticky" : "static",
+                            left: i === 0 ? 0 : "auto",
+                            zIndex: i === 0 ? 11 : "auto",
                           }}
                         >
                           {h} {active ? (sortDir === 1 ? "▲" : "▼") : ""}
@@ -246,7 +249,14 @@ export default function LibraryView({ state, setState }) {
                           return (
                             <td
                               key={cIdx}
-                              style={{ border: "1px solid #eee", padding: 8 }}
+                              style={{ 
+                                border: "1px solid #eee", 
+                                padding: 8,
+                                position: cIdx === 0 ? "sticky" : "static",
+                                left: cIdx === 0 ? 0 : "auto",
+                                background: cIdx === 0 ? "#ffffff" : "transparent",
+                                zIndex: cIdx === 0 ? 9 : "auto",
+                              }}
                             >
                               {isBoolean ? (
                                 <input
