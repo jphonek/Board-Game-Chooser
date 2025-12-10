@@ -8,6 +8,7 @@ export default function LibraryView({ state, setState }) {
   const [sortDir, setSortDir] = useState(1); // 1 = asc, -1 = desc
   const [editingCell, setEditingCell] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [showAddRow, setShowAddRow] = useState(false);
 
   const updateCell = async (rowIdx, colIdx, value) => {
     try {
@@ -69,6 +70,40 @@ export default function LibraryView({ state, setState }) {
     updateCell(rowIdx, colIdx, newValue);
   };
 
+  const addNewRow = async () => {
+    try {
+      const appsScriptUrl = "https://script.google.com/macros/s/AKfycbxi6FjuQazB4lXhz-6MwNXdf3C9DUOzEw7kkgj0LWLs/dev";
+      
+      // Create empty row with same number of columns as headers
+      const numCols = state.sheetValues[0].length;
+      const emptyRow = new Array(numCols).fill("");
+      
+      await fetch(appsScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          action: "addRow",
+          values: emptyRow,
+        }),
+      });
+
+      // Refresh to show new row
+      setTimeout(() => {
+        setState((s) => ({
+          ...s,
+          sheetSyncTrigger: (s.sheetSyncTrigger || 0) + 1,
+        }));
+        setShowAddRow(false);
+      }, 500);
+    } catch (error) {
+      console.error("Error adding row:", error);
+      alert("Error adding row: " + error.message);
+    }
+  };
+
   return (
     <div>
       <div className="card">
@@ -84,6 +119,13 @@ export default function LibraryView({ state, setState }) {
             <div className="small">
               Rows: {state.sheetValues ? state.sheetValues.length - 1 : 0}
             </div>
+            <button
+              className="input"
+              onClick={() => setShowAddRow(true)}
+              style={{ background: "#10b981", color: "white" }}
+            >
+              + Add Game
+            </button>
             <a 
               href={SHEET_VIEW_URL} 
               target="_blank" 
@@ -106,6 +148,25 @@ export default function LibraryView({ state, setState }) {
             </button>
           </div>
         </div>
+
+        {showAddRow && (
+          <div style={{ marginTop: 12, padding: 12, background: "#f0f9ff", border: "1px solid #bfdbfe", borderRadius: 4 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <strong>Add a new game row?</strong>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button className="input" onClick={addNewRow} style={{ background: "#10b981", color: "white" }}>
+                  Confirm
+                </button>
+                <button className="input" onClick={() => setShowAddRow(false)}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+            <div className="small" style={{ marginTop: 8 }}>
+              This will add a blank row to the bottom of your sheet. You can then edit it directly in the table below.
+            </div>
+          </div>
+        )}
 
         {state.sheetLoadError && (
           <div style={{ marginTop: 12, padding: 12, background: "#fee", border: "1px solid #fcc", borderRadius: 4 }}>
