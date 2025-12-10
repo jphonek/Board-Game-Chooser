@@ -185,7 +185,7 @@ export default function LibraryView({ state, setState }) {
               }}
             >
               <table style={{ borderCollapse: "collapse", width: "100%" }}>
-                <thead>
+                <thead style={{ position: "sticky", top: 0, zIndex: 10 }}>
                   <tr>
                     {state.sheetValues[0].map((h, i) => {
                       const active = sortCol === i;
