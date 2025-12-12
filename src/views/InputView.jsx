@@ -78,6 +78,24 @@ export default function InputView({ state, setState }) {
 
   return (
     <div>
+
+      <div className="flex gap-2 w-full">
+  <button
+    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors"
+    onClick={apply}
+  >
+    Go!
+  </button>
+  <button
+    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition-colors"
+    onClick={() => {
+      setRange([0, 190]);
+      setPlayers(2);
+          setSelectedAudiences({});
+    }}
+  >
+    Reset
+  </button>
       <div className="card">
         <div className="row">
           <strong>Players:</strong>{" "}
@@ -203,23 +221,6 @@ export default function InputView({ state, setState }) {
         </div>
       </div>
 
-      <div className="flex gap-2 w-full">
-  <button
-    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors"
-    onClick={apply}
-  >
-    Go!
-  </button>
-  <button
-    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition-colors"
-    onClick={() => {
-      setRange([0, 190]);
-      setPlayers(2);
-          setSelectedAudiences({});
-    }}
-  >
-    Reset
-  </button>
 </div>
     </div>
   );
